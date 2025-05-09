@@ -559,9 +559,10 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/63db612d-3c95-4734-a8f3-693bc39f2410)
 ![image](https://github.com/user-attachments/assets/ab3914cd-c2a5-443e-8daf-d03b1f322e9c)
 ![image](https://github.com/user-attachments/assets/888ebe61-9bdc-4f68-829d-3e04b210d179)
+
 ### Exercise 5 - Data Modeling for Postgres + Python.
 1. Thay đổi đường dẫn cmd thành `Exercise-5`
-2. Chạy lệnh docker `build --tag=exercise-5` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
+2. Chạy lệnh docker `build --tag=exercise-5 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
 ![image](https://github.com/user-attachments/assets/0940a429-7df2-44d5-9000-ccd418f3ba46)
 3. Nội dung file `main.py`:
 ```
@@ -633,6 +634,8 @@ if __name__ == "__main__":
 5. Kết quả:
 ![image](https://github.com/user-attachments/assets/5b83de03-f9dc-4ea6-beb8-ca95865af59a)
 ![image](https://github.com/user-attachments/assets/9ddd7713-955e-4147-81d1-9a080d1d29f8)
+![image](https://github.com/user-attachments/assets/7df25829-036c-499b-bde0-394f5a190fb2)
+![image](https://github.com/user-attachments/assets/02ae5eea-5af0-49e3-8e8e-dedf1178e439)
 
 ### Exercise 6 - Ingestion and Aggregation with PySpark.
 1. Thay đổi đường dẫn cmd thành `Exercise-6`
@@ -848,6 +851,7 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/9d23c2b1-ab92-4b45-a91f-cda5d803565d)
 > 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi ngắn nhất
 ![image](https://github.com/user-attachments/assets/e94178b7-6daa-4471-9d91-325bac258275)
+
 ### Exercise 7 - Using Various PySpark Functions
 1. Thay đổi đường dẫn cmd thành `Exercise-7`
 2. Chạy lệnh `docker build --tag=exercise-7 .` để build image Docker (Quá trình diễn ra trong khoảng 2-3 phút)
@@ -989,23 +993,4 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/071576b7-595e-460f-abb8-822aa036113d)
 ![image](https://github.com/user-attachments/assets/cee41e2a-0a3e-427d-99a4-f336b262749b)
 ![image](https://github.com/user-attachments/assets/c7153f15-21b9-41a1-a47e-100eb55eecc0)
-#### Exercise 8 - Using DuckDB for Analytics and Transforms.
-The [eighth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-8) 
-Using new tools is imperative to growing as a Data Engineer. DuckDB is one of those new tools. In this
-exercise you will have to complete a number of analytical and transformation tasks using DuckDB. This
-will require an understanding of the functions and documenation of DuckDB.
 
-#### Exercise 9 - Using Polars lazy computation.
-The [ninth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-9) 
-Polars is a new Rust based tool with a wonderful Python package that has taken Data Engineering by
-storm. It's better than Pandas because it has both SQL Context and supports Lazy evalutation 
-for larger than memory data sets! Show your Lazy skills!
-
-
-### Advanced Exercises
-
-#### Exercise 10 - Data Quality with Great Expectations
-The [tenth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-10) 
-This exercise is to help you learn Data Quality, specifically a tool called Great Expectations. You will
-be given an existing datasets in CSV format, as well as an existing pipeline. There is a data quality issue 
-and you will be asked to implement some Data Quality checks to catch some of these issues.
