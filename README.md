@@ -635,7 +635,7 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/9ddd7713-955e-4147-81d1-9a080d1d29f8)
 
 ### Exercise 6 - Ingestion and Aggregation with PySpark.
-1. Thay đổi đường dẫn cmd thành `Exercise-5`
+1. Thay đổi đường dẫn cmd thành `Exercise-6`
 2. Chạy lệnh `docker build --tag=exercise-6 .` để build image Docker (Quá trình diễn ra trong khoảng 5 phút)
 ![image](https://github.com/user-attachments/assets/8d7cd1d6-e0fd-4b51-b1f6-62c6c5bab99f)
 3. Nội dung file `main.py`:
@@ -831,7 +831,7 @@ if __name__ == "__main__":
 4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
 ![image](https://github.com/user-attachments/assets/6fc312c5-7e84-4c53-a906-b4f3a19afede)
 ![image](https://github.com/user-attachments/assets/f0667bfc-5393-4737-9e9d-597e2de41288)
-6. Kết quả:
+5. Kết quả:
 ![image](https://github.com/user-attachments/assets/1d00c8cc-dfbd-4915-9a6b-8717ff89c889)
 ![image](https://github.com/user-attachments/assets/e5ce0fd3-9ecd-4147-b58e-2cc66124e123)
 > Thời gian chuyến đi trung bình mỗi ngày
@@ -849,7 +849,146 @@ if __name__ == "__main__":
 > 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi ngắn nhất
 ![image](https://github.com/user-attachments/assets/e94178b7-6daa-4471-9d91-325bac258275)
 ### Exercise 7 - Using Various PySpark Functions
+1. Thay đổi đường dẫn cmd thành `Exercise-7`
+2. Chạy lệnh `docker build --tag=exercise-7 .` để build image Docker (Quá trình diễn ra trong khoảng 2-3 phút)
+![image](https://github.com/user-attachments/assets/3fa9f9ba-b596-409d-9c2c-8d8acc765457)
+3. Nội dung file `main.py`:
+```
+from pyspark.sql import SparkSession
+import pyspark.sql.functions as F
+from pyspark.sql.window import Window
 
+import zipfile
+import tempfile
+import os
+
+
+def read_zip_csv(spark, zip_path):
+    """
+    Đọc file .zip chứa 1 file .csv bên trong, giải nén tạm thời để Spark đọc được.
+    Trả về DataFrame và đường dẫn file .csv tạm.
+    """
+    with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+        # Lọc ra file .csv (bỏ qua các thư mục ẩn của macOS)
+        csv_files = [f for f in zip_ref.namelist() if f.endswith('.csv') and not f.startswith('__MACOSX')]
+
+        if not csv_files:
+            raise Exception("No CSV file found in the ZIP.")
+
+        # Chọn file CSV đầu tiên
+        csv_name = csv_files[0]
+
+        # Giải nén ra file tạm để Spark có thể đọc được
+        with zip_ref.open(csv_name) as file:
+            with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
+                temp_file.write(file.read())
+                temp_file_path = temp_file.name
+
+    # Đọc file CSV bằng Spark
+    df = spark.read.option("header", "true").csv(temp_file_path, inferSchema=True)
+
+    # Gắn thêm cột tên file nguồn
+    df = df.withColumn("source_file", F.lit(csv_name))
+
+    return df, temp_file_path
+
+
+def extract_file_date(df):
+    """
+    Trích xuất ngày (định dạng yyyy-MM-dd) từ tên file và gán vào cột mới file_date.
+    """
+    return df.withColumn(
+        "file_date",
+        F.to_date(F.regexp_extract("source_file", r"(\d{4}-\d{2}-\d{2})", 1), "yyyy-MM-dd")
+    )
+
+
+def extract_brand(df):
+    """
+    Tách brand (thương hiệu) từ model. Nếu model chứa dấu cách thì lấy phần trước dấu cách.
+    Nếu không có dấu cách thì gán là 'unknown'.
+    """
+    return df.withColumn(
+        "brand",
+        F.when(F.instr(F.col("model"), " ") > 0, F.split("model", " ").getItem(0)).otherwise("unknown")
+    )
+
+
+def add_storage_ranking(df):
+    """
+    Xếp hạng các model theo dung lượng (capacity_bytes), từ cao xuống thấp.
+    Dùng dense_rank để đánh số hạng không bị bỏ số.
+    """
+    cap_df = (
+        df.select("model", "capacity_bytes")
+        .dropna()
+        .dropDuplicates()
+        .withColumn("capacity_bytes", F.col("capacity_bytes").cast("long"))
+    )
+
+    # Định nghĩa cửa sổ xếp hạng theo capacity giảm dần
+    window_spec = Window.orderBy(F.col("capacity_bytes").desc())
+    cap_ranked = cap_df.withColumn("storage_ranking", F.dense_rank().over(window_spec))
+
+    # Nối kết quả vào dataframe gốc
+    return df.join(cap_ranked.select("model", "storage_ranking"), on="model", how="left")
+
+
+def add_primary_key(df):
+    """
+    Tạo khóa chính (primary_key) duy nhất bằng cách hash tổ hợp các trường
+    (date, serial_number, model) sử dụng SHA-256.
+    """
+    return df.withColumn(
+        "primary_key",
+        F.sha2(F.concat_ws("||", "date", "serial_number", "model"), 256)
+    )
+
+
+def main():
+    # Tạo Spark session
+    spark = SparkSession.builder.appName("Exercise7").getOrCreate()
+
+    # Đường dẫn file zip
+    zip_path = "data/hard-drive-2022-01-01-failures.csv.zip"
+
+    # Đọc dữ liệu từ zip và lấy đường dẫn file tạm
+    df, temp_file_path = read_zip_csv(spark, zip_path)
+
+    # Thêm các cột mới bằng các hàm đã viết
+    df = extract_file_date(df)
+    df = extract_brand(df)
+    df = add_storage_ranking(df)
+    df = add_primary_key(df)
+
+    # Gộp toàn bộ dữ liệu thành 1 file duy nhất
+    output_path = "data/output_results"
+    df = df.coalesce(1)
+
+    # Ghi dữ liệu ra file CSV
+    df.select("date", "serial_number", "model", "capacity_bytes", "source_file",
+              "file_date", "brand", "storage_ranking", "primary_key") \
+        .write.option("header", "true").mode("overwrite").csv(output_path)
+
+    # Hiển thị một vài dòng kết quả
+    df.select("date", "serial_number", "model", "capacity_bytes", "source_file",
+              "file_date", "brand", "storage_ranking", "primary_key").show(truncate=False)
+
+    # Xóa file tạm
+    os.remove(temp_file_path)
+    spark.stop()
+
+
+if __name__ == "__main__":
+    main()
+```
+4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
+![image](https://github.com/user-attachments/assets/e2e5177b-44e8-45e6-b12e-0890846e9d8e)
+![image](https://github.com/user-attachments/assets/1d6f4e05-07b7-4261-8dea-d714506498a6)
+5. Kết quả:
+![image](https://github.com/user-attachments/assets/071576b7-595e-460f-abb8-822aa036113d)
+![image](https://github.com/user-attachments/assets/cee41e2a-0a3e-427d-99a4-f336b262749b)
+![image](https://github.com/user-attachments/assets/c7153f15-21b9-41a1-a47e-100eb55eecc0)
 #### Exercise 8 - Using DuckDB for Analytics and Transforms.
 The [eighth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-8) 
 Using new tools is imperative to growing as a Data Engineer. DuckDB is one of those new tools. In this
