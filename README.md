@@ -6,6 +6,7 @@
 
 # LAB 8
 Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
+
 	https://www.youtube.com/watch?v=obNqcFM866M
 ![image](https://github.com/user-attachments/assets/552be05e-3fd4-49f9-aea9-a81470abc994)
 ![image](https://github.com/user-attachments/assets/5cfa2f87-f471-490a-b667-52278e1787fe)
