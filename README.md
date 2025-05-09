@@ -2,9 +2,11 @@
 ## MÔN: NHẬP MÔN KỸ THUẬT DỮ LIỆU - LỚP: DHKHDL19A
 ### Danh sách thành viên:
 >> 1. Trần Nhật Tiến
->> 2. Phạm Thị Anh Thư
+>> 2. Phạm Thị Anh Thư _ MSSV 23643081
 
 # LAB 8
+Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
+	https://www.youtube.com/watch?v=obNqcFM866M
 ![image](https://github.com/user-attachments/assets/552be05e-3fd4-49f9-aea9-a81470abc994)
 ![image](https://github.com/user-attachments/assets/5cfa2f87-f471-490a-b667-52278e1787fe)
 ![image](https://github.com/user-attachments/assets/908cf416-e4fd-456b-8184-587e69e0d5c6)
