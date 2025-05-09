@@ -11,8 +11,10 @@
 >> 1. Đăng nhập vào Github
 >> 2. Truy cập đường link: https://github.com/danielbeach/data-engineering-practice/tree/main
 >> 3. Chọn Fork
-![image](https://github.com/user-attachments/assets/d6b87987-3af8-4c41-bb27-f01c0a5d308c)
+![image](https://github.com/user-attachments/assets/9c613dcf-a3cd-4632-bc26-10417ccb5cb5)
 >> 4. Click Create Fork
+![image](https://github.com/user-attachments/assets/ecc7468a-b410-4d23-8f77-798249a11cd5)
+
 
 One of the main obstacles of Data Engineering is the large
 and varied technical skills that can be required on a 
