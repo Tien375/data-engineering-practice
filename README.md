@@ -245,9 +245,10 @@ do some simple cumulative actions.
 > 1. Thay đổi đường dẫn thư mục tại CMD thành `Exercise-2`
 
 > 2. Chạy lệnh docker `build --tag=exercise-2 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
-![image](https://github.com/user-attachments/assets/3d2d81d3-58fc-45e9-80ba-1cba0aeafe88)
+![image](https://github.com/user-attachments/assets/d32f03db-0b90-476d-bd2d-72ea48b262ba)
 
 > 3. Sau khi build xong, truy cập file main.py bằng VS code
+![image](https://github.com/user-attachments/assets/0e4ef0c1-f24c-4d75-8fb0-18a7b0d35376)
 
 ##### Nội dung file main.py
 
