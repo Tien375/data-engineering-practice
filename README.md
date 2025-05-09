@@ -66,9 +66,11 @@ from an `HTTP` source and unzip them, storing them locally with `Python`.
 ![image](https://github.com/user-attachments/assets/d61fb447-06b2-4656-8555-bb9707404536)
 
 > 2. Sau đó tiến hành chạy lệnh `cd data-engineering-practice/Exercises/Exercise-1` để thay đổi đường dẫn thư mục Exercise-1
-![image](https://github.com/user-attachments/assets/18340206-8dc3-46b2-974d-756c246a3e50)
 
 > 3. Tiếp tục thực hiện lệnh: `docker build --tag=exercise-1 .` để build Docker image Quá trình sẽ mất vài phút
+![image](https://github.com/user-attachments/assets/18340206-8dc3-46b2-974d-756c246a3e50)
+
+
 #### Exercise 2 - Web Scraping + Downloading + Pandas
 The [second exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-2) 
 tests your ability perform web scraping, build uris, download files, and use Pandas to
