@@ -466,11 +466,10 @@ if __name__ == "__main__":
 > 6. Kết quả sau khi thực hiện
 ![image](https://github.com/user-attachments/assets/0b52a684-2a11-45cb-8ac7-cf33d0f80149)
 
-#### Exercise 4 - Convert JSON to CSV + Ragged Directories.
-The [fourth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-4) 
-focuses more file types `json` and `csv`, and working with them in `Python`.
-You will have to traverse a ragged directory structure, finding any `json` files
-and converting them to `csv`.
+### Exercise 4 - Convert JSON to CSV + Ragged Directories.
+1. Thay đổi đường dẫn thư mục tại cmd thành `Exercise-4`
+2. Chạy lệnh docker `build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
+![image](https://github.com/user-attachments/assets/cf9c4de5-2bcb-416a-8a7c-fcdaa871759e)
 
 #### Exercise 5 - Data Modeling for Postgres + Python.
 The [fifth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-5) 
