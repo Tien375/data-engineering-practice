@@ -245,8 +245,7 @@ do some simple cumulative actions.
 > 1. Thay đổi đường dẫn thư mục tại CMD thành `Exercise-2`
 
 > 2. Chạy lệnh docker `build --tag=exercise-2 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
-![image](https://github.com/user-attachments/assets/499bb349-2512-4d0a-a3f3-2ad71c07359f)
-![image](https://github.com/user-attachments/assets/d32f03db-0b90-476d-bd2d-72ea48b262ba)
+![image](https://github.com/user-attachments/assets/e6c08d26-b39e-4b5e-bb5e-08947bd281b6)
 
 > 3. Sau khi build xong, truy cập file main.py bằng VS code
 ![image](https://github.com/user-attachments/assets/0e4ef0c1-f24c-4d75-8fb0-18a7b0d35376)
@@ -393,6 +392,8 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/40b70aa4-c743-4ca2-8c2e-2d23a26b7ddd)
 ![image](https://github.com/user-attachments/assets/b7492cb5-c24e-4294-bfd0-33d5b7790250)
 
+> Hoặc sau khi file main.py , chạy dòng lệnh thực thi lệnh `docker-compose up run`. Kết quả sau khi thực hiện:
+![image](https://github.com/user-attachments/assets/3aacd85d-ff6d-4814-b154-14d34f48e080)
 
 #### Exercise 3 - Boto3 AWS + s3 + Python.
 The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) tests a few skills.
