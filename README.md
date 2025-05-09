@@ -41,6 +41,7 @@ the `README` for each exercise, follow those instructions.
 The [first exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-1) tests your ability to download a number of files
 from an `HTTP` source and unzip them, storing them locally with `Python`.
 `cd Exercises/Exercise-1` and see `README` in that location for instructions.
+![image](https://github.com/user-attachments/assets/18340206-8dc3-46b2-974d-756c246a3e50)
 
 #### Exercise 2 - Web Scraping + Downloading + Pandas
 The [second exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-2) 
