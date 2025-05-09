@@ -14,6 +14,18 @@ Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
 ![image](https://github.com/user-attachments/assets/db4c440a-37c6-419d-9234-321f1241d1d8)
 ![image](https://github.com/user-attachments/assets/5e98250f-e3bc-4c40-9590-d5ebddb771bd)
 
+Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn luyện mô hình
+
+	https://www.youtube.com/watch?v=LtInPTXfdb8
+ >> 1. Chạy Docker Compose
+ ![image](https://github.com/user-attachments/assets/9c4d4453-72e7-492a-b876-d13dca201c10)
+
+>> 2. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
+
+>> 
+
+
+
 # LAB 9
 ## BÀI LÀM
 >> 1. Đăng nhập vào Github
