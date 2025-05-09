@@ -471,7 +471,7 @@ if __name__ == "__main__":
 2. Chạy lệnh `docker build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong khoảng 5 phút)
 ![image](https://github.com/user-attachments/assets/cf9c4de5-2bcb-416a-8a7c-fcdaa871759e)
 ![image](https://github.com/user-attachments/assets/c000b830-a67c-4b5d-a975-84c79e46a307)
-4. Nội dung file `main.py`
+3. Nội dung file `main.py`
 ```
 import os
 import glob
@@ -564,7 +564,9 @@ if __name__ == "__main__":
 1. Thay đổi đường dẫn cmd thành `Exercise-5`
 2. Chạy lệnh `docker build --tag=exercise-5 .` để build image Docker (Quá trình diễn ra trong khoảng 1-2 phút)
 ![image](https://github.com/user-attachments/assets/0940a429-7df2-44d5-9000-ccd418f3ba46)
-3. Nội dung file `main.py`:
+3.Tạo câu lệnh SQL CREATE cho mỗi tập tin CSV
+![image](https://github.com/user-attachments/assets/a8763542-c80c-4535-a693-12430fdac39e)
+4. Nội dung file `main.py`:
 ```
 import psycopg2
 import csv
