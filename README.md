@@ -1,7 +1,7 @@
 ![image](https://github.com/user-attachments/assets/6c52df6a-30ff-4166-b7f1-ba747428b4d3)# REPPORT LAB8 - LAB9
 ## MÔN: NHẬP MÔN KỸ THUẬT DỮ LIỆU - LỚP: DHKHDL19A
 ### Danh sách thành viên:
->> 1. Trần Nhật Tiến
+>> 1. Trần Nhật Tiến _ MSSV 23673681
 >> 2. Phạm Thị Anh Thư _ MSSV 23643081
 
 # LAB 8
