@@ -549,16 +549,16 @@ if __name__ == "__main__":
 ```
 4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
 ![image](https://github.com/user-attachments/assets/ed1748d0-c796-4402-9714-3a944feba22c)
-5. Kết quả: 
-![image](https://github.com/user-attachments/assets/f6cbb4b4-5f1c-4d2f-8458-de593034531c)
-![image](https://github.com/user-attachments/assets/b4fd5b51-8cde-4933-a65a-56102ec1413e)
-![image](https://github.com/user-attachments/assets/91f3b46b-bba7-4dca-afe7-ada01065219f)
-![image](https://github.com/user-attachments/assets/979318ef-431e-4e2e-9ce3-45d0d82c5318)
-![image](https://github.com/user-attachments/assets/85bd802f-95b5-409e-ab32-defaf558fe08)
-![image](https://github.com/user-attachments/assets/d5542882-98a9-4f5f-9c7f-c2219c7362bb)
-![image](https://github.com/user-attachments/assets/3502ed4c-4ab4-4617-93a9-420f6d8c80b2)
-![image](https://github.com/user-attachments/assets/017fa112-fc1e-4847-ae38-ac08b9ac29b5)
-
+5. Kết quả:
+![image](https://github.com/user-attachments/assets/2cfc4189-33b4-4194-af6f-4ee6b80dca0b)
+![image](https://github.com/user-attachments/assets/b2148c58-4a4d-44cc-90da-2aaec53a8e69)
+![image](https://github.com/user-attachments/assets/efa1d525-891d-4525-9dc0-8700d1964dfa)
+![image](https://github.com/user-attachments/assets/b81319d1-484d-4120-a5e7-ce4fe752d307)
+![image](https://github.com/user-attachments/assets/fed35c44-fb64-41a7-a031-5f519cb86566)
+![image](https://github.com/user-attachments/assets/5ceb7bb0-b485-43ff-aeab-de0a250bb01c)
+![image](https://github.com/user-attachments/assets/63db612d-3c95-4734-a8f3-693bc39f2410)
+![image](https://github.com/user-attachments/assets/ab3914cd-c2a5-443e-8daf-d03b1f322e9c)
+![image](https://github.com/user-attachments/assets/888ebe61-9bdc-4f68-829d-3e04b210d179)
 ### Exercise 5 - Data Modeling for Postgres + Python.
 1. Thay đổi đường dẫn cmd thành `Exercise-5`
 2. Chạy lệnh docker `build --tag=exercise-5` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
