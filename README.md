@@ -471,7 +471,8 @@ if __name__ == "__main__":
 2. Chạy lệnh docker `build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
 ![image](https://github.com/user-attachments/assets/cf9c4de5-2bcb-416a-8a7c-fcdaa871759e)
 3. Nội dung file `main.py`
-`import os
+```
+import os
 import glob
 import json
 import csv
@@ -532,7 +533,7 @@ def main():
 
 if __name__ == "__main__":
     main()  # Gọi hàm main khi chạy script
-`
+```
 4. save file `main.py` và thực thi lệnh `docker-compose up run`
 ![image](https://github.com/user-attachments/assets/c000b830-a67c-4b5d-a975-84c79e46a307)
 ![image](https://github.com/user-attachments/assets/ed1748d0-c796-4402-9714-3a944feba22c)
