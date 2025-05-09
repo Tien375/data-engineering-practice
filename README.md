@@ -20,9 +20,15 @@ Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn l
  >> 1. Chạy Docker Compose
  ![image](https://github.com/user-attachments/assets/9c4d4453-72e7-492a-b876-d13dca201c10)
 
->> 2. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
+>> 2. Mở Docker Desktop 
+![image](https://github.com/user-attachments/assets/278503d8-eb4a-4880-a527-2439000469bd)
+![image](https://github.com/user-attachments/assets/aaa611b1-ace5-41a5-9a9b-b9d999fac61d)
 
->> 
+>> 3. Sau khi định nghĩa DAG file `Simple_dag_local.py` copy vào thư mục dags ở trên service
+![image](https://github.com/user-attachments/assets/6c053e37-4a05-4154-8444-9d5d5658d523)
+
+>> 4. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
+
 
 
 
