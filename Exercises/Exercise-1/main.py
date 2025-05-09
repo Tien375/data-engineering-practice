@@ -1,88 +1,127 @@
-import boto3
-import gzip
-import io
+import requests
+import os
+import zipfile
+import aiohttp
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 import logging
-from botocore.exceptions import ClientError
+from pathlib import Path
 import unittest
 
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-BUCKET_NAME = "commoncrawl"
-WET_PATHS_KEY = "crawl-data/CC-MAIN-2022-05/wet.paths.gz"
+download_uris = [
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2018_Q4.zip",
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2019_Q1.zip",
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2019_Q2.zip",
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2019_Q3.zip",
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2019_Q4.zip",
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2020_Q1.zip",
+    "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2220_Q1.zip",
+]
 
-def get_s3_client():
-    """Create and return an S3 client."""
-    return boto3.client('s3')
+DOWNLOAD_DIR = "downloads"
 
-def download_and_extract_gz_in_memory(s3_client):
-    """Download and extract wet.paths.gz file in memory, return first URI."""
+def create_download_directory():
+    """Create downloads directory if it doesn't exist."""
+    Path(DOWNLOAD_DIR).mkdir(exist_ok=True)
+
+def get_filename_from_uri(uri):
+    """Extract filename from URI."""
+    return uri.split('/')[-1]
+
+def extract_zip(zip_path):
+    """Extract CSV from zip file and remove the zip."""
     try:
-        # Download file into memory
-        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=WET_PATHS_KEY)
-        gz_data = response['Body'].read()
-        
-        # Extract gzip content in memory
-        with gzip.GzipFile(fileobj=io.BytesIO(gz_data), mode='rb') as gz:
-            content = gz.read().decode('utf-8')
-        
-        # Get first line (URI)
-        first_uri = content.splitlines()[0].strip()
-        logger.info(f"Extracted first URI: {first_uri}")
-        return first_uri
-    except ClientError as e:
-        logger.error(f"Error downloading/extracting {WET_PATHS_KEY}: {str(e)}")
-        return None
-    except gzip.BadGzipFile as e:
-        logger.error(f"Invalid gzip file: {str(e)}")
-        return None
-    except Exception as e:
-        logger.error(f"Unexpected error: {str(e)}")
-        return None
+        with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+            zip_ref.extractall(DOWNLOAD_DIR)
+        os.remove(zip_path)
+        logger.info(f"Extracted and removed {zip_path}")
+    except zipfile.BadZipFile:
+        logger.error(f"Invalid zip file: {zip_path}")
+        os.remove(zip_path)
 
-def stream_file_lines(s3_client, file_key):
-    """Download and stream file contents line by line."""
+def download_file(uri):
+    """Download a single file synchronously."""
+    filename = get_filename_from_uri(uri)
+    file_path = os.path.join(DOWNLOAD_DIR, filename)
+    
     try:
-        # Get object with streaming response
-        response = s3_client.get_object(Bucket=BUCKET_NAME, Key=file_key)
-        stream = response['Body']
-        
-        # Stream lines one at a time
-        with io.TextIOWrapper(stream, encoding='utf-8') as text_stream:
-            for line in text_stream:
-                print(line.strip())
-        
-        logger.info(f"Successfully streamed contents of {file_key}")
-    except ClientError as e:
-        logger.error(f"Error streaming {file_key}: {str(e)}")
-    except Exception as e:
-        logger.error(f"Unexpected error streaming {file_key}: {str(e)}")
+        response = requests.get(uri, stream=True)
+        if response.status_code == 200:
+            with open(file_path, 'wb') as f:
+                for chunk in response.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            logger.info(f"Downloaded {filename}")
+            extract_zip(file_path)
+        else:
+            logger.error(f"Failed to download {uri}: Status {response.status_code}")
+    except requests.RequestException as e:
+        logger.error(f"Error downloading {uri}: {str(e)}")
+
+async def download_file_async(session, uri):
+    """Download a single file asynchronously."""
+    filename = get_filename_from_uri(uri)
+    file_path = os.path.join(DOWNLOAD_DIR, filename)
+    
+    try:
+        async with session.get(uri) as response:
+            if response.status == 200:
+                with open(file_path, 'wb') as f:
+                    f.write(await response.read())
+                logger.info(f"Downloaded {filename} (async)")
+                extract_zip(file_path)
+            else:
+                logger.error(f"Failed to download {uri}: Status {response.status}")
+    except aiohttp.ClientError as e:
+        logger.error(f"Error downloading {uri}: {str(e)}")
+
+async def download_files_async(uris):
+    """Download files asynchronously using aiohttp."""
+    async with aiohttp.ClientSession() as session:
+        tasks = [download_file_async(session, uri) for uri in uris]
+        await asyncio.gather(*tasks)
+
+def download_files_threaded(uris):
+    """Download files using ThreadPoolExecutor."""
+    with ThreadPoolExecutor(max_workers=4) as executor:
+        executor.map(download_file, uris)
 
 def main():
-    """Main function to execute the S3 download and streaming process."""
-    s3_client = get_s3_client()
+    """Main function to execute the download process."""
+    create_download_directory()
     
-    # Download and extract wet.paths.gz in memory, get first URI
-    first_uri = download_and_extract_gz_in_memory(s3_client)
+    # Synchronous download
+    logger.info("Starting synchronous downloads")
+    for uri in download_uris:
+        download_file(uri)
     
-    if first_uri:
-        # Stream the file contents line by line
-        stream_file_lines(s3_client, first_uri)
+    # Threaded download
+    logger.info("Starting threaded downloads")
+    download_files_threaded(download_uris)
+    
+    # Async download
+    logger.info("Starting async downloads")
+    asyncio.run(download_files_async(download_uris))
 
-class TestS3Functions(unittest.TestCase):
-    def test_get_s3_client(self):
-        client = get_s3_client()
-        self.assertIsNotNone(client)
-        self.assertEqual(client.meta.service_model.service_name, 's3')
+class TestDownloadFunctions(unittest.TestCase):
+    def setUp(self):
+        create_download_directory()
     
-    def test_download_invalid_key(self):
-        s3_client = get_s3_client()
-        try:
-            s3_client.get_object(Bucket=BUCKET_NAME, Key="nonexistent/key")
-            self.fail("Expected ClientError for invalid key")
-        except ClientError:
-            pass
+    def test_get_filename_from_uri(self):
+        uri = "https://divvy-tripdata.s3.amazonaws.com/Divvy_Trips_2018_Q4.zip"
+        self.assertEqual(get_filename_from_uri(uri), "Divvy_Trips_2018_Q4.zip")
+    
+    def test_create_download_directory(self):
+        self.assertTrue(os.path.exists(DOWNLOAD_DIR))
+    
+    def test_invalid_uri(self):
+        uri = "https://invalid-url/does_not_exist.zip"
+        download_file(uri)
+        filename = get_filename_from_uri(uri)
+        self.assertFalse(os.path.exists(os.path.join(DOWNLOAD_DIR, filename)))
 
 if __name__ == "__main__":
     main()
