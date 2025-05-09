@@ -564,7 +564,7 @@ if __name__ == "__main__":
 1. Thay đổi đường dẫn cmd thành `Exercise-5`
 2. Chạy lệnh `docker build --tag=exercise-5 .` để build image Docker (Quá trình diễn ra trong khoảng 1-2 phút)
 ![image](https://github.com/user-attachments/assets/0940a429-7df2-44d5-9000-ccd418f3ba46)
-3.Tạo câu lệnh SQL CREATE cho mỗi tập tin CSV
+3. Tạo câu lệnh SQL CREATE cho mỗi tập tin CSV
 ![image](https://github.com/user-attachments/assets/a8763542-c80c-4535-a693-12430fdac39e)
 4. Nội dung file `main.py`:
 ```
