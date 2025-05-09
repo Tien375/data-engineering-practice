@@ -405,8 +405,8 @@ actions to download some open source `s3` data files.
 > 1. Thay đổi đường dẫn thư mục tại CMD thành `Exercise-3`
 
 > 2. Chạy lệnh docker `build --tag=exercise-3 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
-![image](https://github.com/user-attachments/assets/760c261b-30ed-4e75-9bd8-b30ec7f4ca1d)
-![image](https://github.com/user-attachments/assets/44cbdfc5-91cb-4c98-852a-2f11b4bb9e92)
+![image](https://github.com/user-attachments/assets/e10d5d35-ba00-4464-b84f-da79fa9d3d6f)
+![image](https://github.com/user-attachments/assets/0b28b4f2-4aad-4e28-8a62-9dc32d3a6928)
 
 > 3. Sau khi build xong, truy cập file `main.py` bằng VS code
 ![image](https://github.com/user-attachments/assets/63c47578-c075-4f40-b096-d1cc3c3ed998)
