@@ -504,9 +504,15 @@ if __name__ == "__main__":
     # Run unit tests
     unittest.main(argv=[''], exit=False)
 ```
-> 4. Kết quả nhận được
+> 4. Kết quả nhận được trên Visual Studio Code
+![image](https://github.com/user-attachments/assets/93a60232-5124-4507-b158-7cfa9440c2a4)
+
+![image](https://github.com/user-attachments/assets/0b52a684-2a11-45cb-8ac7-cf33d0f80149)
+
 ![image](https://github.com/user-attachments/assets/8fcf455e-caa1-469d-9df6-0ba6342ab375)
 
+> 5. Hoặc sau khi lưu file `main.py`, thực hiện lệnh `docker-compose up run`
+> 6. Kết quả sau khi thực hiện 
 #### Exercise 4 - Convert JSON to CSV + Ragged Directories.
 The [fourth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-4) 
 focuses more file types `json` and `csv`, and working with them in `Python`.
