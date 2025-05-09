@@ -246,6 +246,7 @@ do some simple cumulative actions.
 
 > 2. Chạy lệnh docker `build --tag=exercise-2 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
 ![image](https://github.com/user-attachments/assets/d32f03db-0b90-476d-bd2d-72ea48b262ba)
+![image](https://github.com/user-attachments/assets/499bb349-2512-4d0a-a3f3-2ad71c07359f)
 
 > 3. Sau khi build xong, truy cập file main.py bằng VS code
 ![image](https://github.com/user-attachments/assets/0e4ef0c1-f24c-4d75-8fb0-18a7b0d35376)
@@ -388,12 +389,7 @@ if __name__ == "__main__":
     unittest.main(argv=[''], exit=False)
 ```
 
-> 6. Buid
-![image](https://github.com/user-attachments/assets/499bb349-2512-4d0a-a3f3-2ad71c07359f)
-![image](https://github.com/user-attachments/assets/777c3393-361b-4261-afae-a103456c4ea1)
-![image](https://github.com/user-attachments/assets/269ef954-b69c-4a4f-b30c-53a76b68cdab)
-
-> 5. Kết quả sau khi thực thi code trên Visual Studio Code
+> 4. Kết quả sau khi thực thi code trên Visual Studio Code
 ![image](https://github.com/user-attachments/assets/40b70aa4-c743-4ca2-8c2e-2d23a26b7ddd)
 ![image](https://github.com/user-attachments/assets/b7492cb5-c24e-4294-bfd0-33d5b7790250)
 
