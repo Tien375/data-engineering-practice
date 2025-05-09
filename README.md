@@ -220,8 +220,20 @@ if __name__ == "__main__":
 
 - Ghi log quá trình tải và giải nén.
 
-> 5. Sau khi save `main.py`, chạy lệnh `docker-compose up run` (mất khoảng 5 phút)
+> 5. Kết quả sau khi thực thi code trên Visual Studio Code
+![image](https://github.com/user-attachments/assets/d4837a00-d412-4e3d-a004-e3b557d02ae0)
+![image](https://github.com/user-attachments/assets/be248502-369b-4215-bfba-894f1cc622af)
+![image](https://github.com/user-attachments/assets/d5b900a5-0493-42ca-9ed4-6e16ba38da9e)
+![image](https://github.com/user-attachments/assets/02be479f-3a09-42de-a40d-d022b5ea4a4b)
+![image](https://github.com/user-attachments/assets/fb1a5a5f-214c-4590-ace3-5d39be8f3d3f)
 
+> 6. Kết quả nhận được
+![image](https://github.com/user-attachments/assets/792be522-45b3-411a-899f-369f43181966)
+![image](https://github.com/user-attachments/assets/a2dfe656-27e6-4460-b9ee-ce0c6faa38f8)
+![image](https://github.com/user-attachments/assets/af012498-0f98-4110-bb6e-17dc7f2a0b72)
+
+> 7. Sau khi save `main.py`, chạy lệnh `docker-compose up run` (mất khoảng 5 phút)
+![image](https://github.com/user-attachments/assets/95848f93-4780-4512-a198-a31543a0313b)
 
 #### Exercise 2 - Web Scraping + Downloading + Pandas
 The [second exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-2) 
