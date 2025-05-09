@@ -5,6 +5,11 @@
 >> 2. Phạm Thị Anh Thư
 
 # LAB 8
+![image](https://github.com/user-attachments/assets/552be05e-3fd4-49f9-aea9-a81470abc994)
+![image](https://github.com/user-attachments/assets/5cfa2f87-f471-490a-b667-52278e1787fe)
+![image](https://github.com/user-attachments/assets/908cf416-e4fd-456b-8184-587e69e0d5c6)
+![image](https://github.com/user-attachments/assets/db4c440a-37c6-419d-9234-321f1241d1d8)
+![image](https://github.com/user-attachments/assets/5e98250f-e3bc-4c40-9590-d5ebddb771bd)
 
 # LAB 9
 ## BÀI LÀM
