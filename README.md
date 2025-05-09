@@ -228,6 +228,7 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/fb1a5a5f-214c-4590-ace3-5d39be8f3d3f)
 
 > 6. Kết quả nhận được
+
 ![image](https://github.com/user-attachments/assets/792be522-45b3-411a-899f-369f43181966)
 ![image](https://github.com/user-attachments/assets/a2dfe656-27e6-4460-b9ee-ce0c6faa38f8)
 ![image](https://github.com/user-attachments/assets/af012498-0f98-4110-bb6e-17dc7f2a0b72)
