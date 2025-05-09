@@ -832,7 +832,7 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/6fc312c5-7e84-4c53-a906-b4f3a19afede)
 ![image](https://github.com/user-attachments/assets/f0667bfc-5393-4737-9e9d-597e2de41288)
 5. Kết quả:
-![image](https://github.com/user-attachments/assets/1d00c8cc-dfbd-4915-9a6b-8717ff89c889)
+![image](https://github.com/user-attachments/assets/70e70cc5-7bdc-4ad2-b3d5-e80db2eae5e7)
 ![image](https://github.com/user-attachments/assets/e5ce0fd3-9ecd-4147-b58e-2cc66124e123)
 > Thời gian chuyến đi trung bình mỗi ngày
 ![image](https://github.com/user-attachments/assets/1a28bfd4-a890-42b8-b607-a528ae385c7a)
