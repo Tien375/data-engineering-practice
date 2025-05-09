@@ -650,13 +650,14 @@ import zipfile
 
 def read_zip_csv(spark, path):
     """
-    Đọc file ZIP chứa các file CSV.
-    - Giải nén tạm thời từng file CSV trong ZIP.
-    - Đọc các file CSV bằng Spark.
-    - Hợp nhất tất cả DataFrame (nếu có nhiều hơn 1).
-    - Trả về DataFrame kết quả.
+    Đọc file ZIP chứa các file CSV và trả về một DataFrame duy nhất:
+    - Giải nén tạm các file .csv trong ZIP vào ổ đĩa.
+    - Đọc các file .csv bằng Spark.
+    - Hợp nhất tất cả các DataFrame nếu có nhiều file.
+    - Trả về một DataFrame tổng hợp.
     """
     with zipfile.ZipFile(path, 'r') as zip_ref:
+        # Lọc danh sách file CSV hợp lệ
         csv_files = [
             f for f in zip_ref.namelist()
             if f.endswith('.csv') and not f.startswith('__MACOSX/') and not os.path.basename(f).startswith('._')
@@ -664,19 +665,21 @@ def read_zip_csv(spark, path):
 
         dfs = []
         temp_paths = []
+
         for csv_file in csv_files:
+            # Ghi dữ liệu CSV tạm thời ra ổ đĩa để Spark có thể đọc
             with zip_ref.open(csv_file) as file:
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
                     temp_file.write(file.read())
-                    temp_path = temp_file.name
-                    temp_paths.append(temp_path)
+                    temp_paths.append(temp_file.name)
 
-                df = spark.read.option("header", "true").csv(temp_path, inferSchema=True)
+                # Đọc file CSV thành DataFrame
+                df = spark.read.option("header", "true").csv(temp_file.name, inferSchema=True)
                 dfs.append(df)
 
-        # Hợp nhất các DataFrame
+        # Hợp nhất tất cả DataFrame nếu có nhiều
         final_df = dfs[0] if len(dfs) == 1 else dfs[0].unionByName(*dfs[1:])
-        final_df.cache().count()  # Cache để tối ưu hiệu suất
+        final_df.cache().count()  # Cache để tăng hiệu năng truy vấn sau
 
         # Xoá các file tạm
         for path in temp_paths:
@@ -687,10 +690,11 @@ def read_zip_csv(spark, path):
 
 def standardize_schema(df):
     """
-    Chuẩn hoá schema của DataFrame.
-    - Đổi tên các cột nếu có định dạng từ năm 2020 (tên cột khác 2019).
-    - Thêm các cột `gender` và `birthyear` nếu thiếu.
-    - Đảm bảo DataFrame có định dạng thống nhất: trip_id, tripduration, start_time, from_station_name, gender, birthyear.
+    Chuẩn hoá schema của DataFrame:
+    - Đổi tên các cột nếu là dữ liệu năm 2020 (ride_id, started_at, ...).
+    - Tính tripduration nếu chưa có.
+    - Thêm cột gender và birthyear nếu thiếu.
+    - Trả về các cột được chuẩn hoá.
     """
     columns = df.columns
     if "ride_id" in columns:
@@ -702,6 +706,7 @@ def standardize_schema(df):
                .withColumn("birthyear", lit(None).cast("int"))
         df = df.select("trip_id", "tripduration", "start_time", "from_station_name", "gender", "birthyear")
     else:
+        # Dữ liệu từ 2019 đã đúng định dạng
         df = df.select("trip_id", "tripduration", "start_time", "from_station_name", "gender", "birthyear")
     return df
 
@@ -710,101 +715,107 @@ def preprocess_data(df):
     """
     Tiền xử lý dữ liệu:
     - Ép kiểu dữ liệu.
-    - Tạo thêm các cột ngày, tháng, tuổi.
+    - Tạo thêm các cột ngày (date), tháng (month), tuổi (age).
     """
-    df = df.withColumn("tripduration", col("tripduration").cast("float")) \
-        .withColumn("start_time", to_timestamp("start_time")) \
-        .withColumn("date", to_date("start_time")) \
-        .withColumn("month", date_format(col("start_time"), "yyyy-MM")) \
-        .withColumn("birthyear", col("birthyear").cast("int")) \
-        .withColumn("age", 2023 - col("birthyear"))  # Tính tuổi
-    return df
+    return df.withColumn("tripduration", col("tripduration").cast("float")) \
+             .withColumn("start_time", to_timestamp("start_time")) \
+             .withColumn("date", to_date("start_time")) \
+             .withColumn("month", date_format(col("start_time"), "yyyy-MM")) \
+             .withColumn("birthyear", col("birthyear").cast("int")) \
+             .withColumn("age", 2023 - col("birthyear"))
 
 
 def avg_trip_duration_per_day(df):
     """
-    Tính thời lượng chuyến đi trung bình theo từng ngày và ghi ra file CSV.
+    Báo cáo: thời lượng chuyến đi trung bình theo ngày.
+    - Ghi ra file CSV duy nhất trong thư mục reports/avg_trip_duration_per_day
     """
     df.groupBy("date").agg(avg("tripduration").alias("avg_duration")) \
-        .write.mode("overwrite").csv("reports/avg_trip_duration_per_day", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/avg_trip_duration_per_day", header=True)
 
 
 def trips_per_day(df):
     """
-    Tính tổng số chuyến đi mỗi ngày và ghi ra file CSV.
+    Báo cáo: tổng số chuyến đi mỗi ngày.
+    - Ghi ra CSV trong thư mục reports/trips_per_day
     """
     df.groupBy("date").count() \
-        .write.mode("overwrite").csv("reports/trips_per_day", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/trips_per_day", header=True)
 
 
 def most_popular_start_station_per_month(df):
     """
-    Tìm bến xuất phát phổ biến nhất mỗi tháng.
-    - Dựa vào số lượng chuyến đi tại mỗi bến.
-    - Lấy bến có số lượng lớn nhất theo từng tháng.
+    Báo cáo: bến xuất phát phổ biến nhất mỗi tháng.
+    - Tính số lượt xuất phát theo tháng và bến.
+    - Chọn bến có số lượt cao nhất mỗi tháng.
     """
     window = Window.partitionBy("month").orderBy(desc("count"))
     df.groupBy("month", "from_station_name").count() \
         .withColumn("rank", row_number().over(window)) \
         .filter(col("rank") == 1) \
-        .write.mode("overwrite").csv("reports/most_popular_start_station", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/most_popular_start_station", header=True)
 
 
 def top3_stations_last_two_weeks(df):
     """
-    Lấy top 3 bến xuất phát mỗi ngày trong 2 tuần gần nhất.
-    - Dựa trên ngày mới nhất trong dữ liệu.
+    Báo cáo: top 3 bến xuất phát mỗi ngày trong 14 ngày gần nhất.
+    - Dựa vào ngày mới nhất có trong dữ liệu.
     """
     latest_date = df.select(max("date")).first()[0]
     cutoff = latest_date - expr("INTERVAL 14 DAYS")
     window = Window.partitionBy("date").orderBy(desc("count"))
+
     df.filter(col("date") >= cutoff) \
         .groupBy("date", "from_station_name").count() \
         .withColumn("rank", row_number().over(window)) \
         .filter(col("rank") <= 3) \
-        .write.mode("overwrite").csv("reports/top3_stations_last_2_weeks", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/top3_stations_last_2_weeks", header=True)
 
 
 def gender_avg_duration(df):
     """
-    Tính thời lượng chuyến đi trung bình theo giới tính và ghi ra CSV.
+    Báo cáo: thời lượng chuyến đi trung bình theo giới tính.
     """
     df.groupBy("gender").agg(avg("tripduration").alias("avg_duration")) \
-        .write.mode("overwrite").csv("reports/gender_avg_duration", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/gender_avg_duration", header=True)
 
 
 def top10_ages_trip_duration(df):
     """
-    Tìm top 10 độ tuổi có thời lượng chuyến đi dài nhất và ngắn nhất.
+    Báo cáo:
+    - 10 độ tuổi có chuyến đi dài nhất.
+    - 10 độ tuổi có chuyến đi ngắn nhất.
     """
     df.orderBy(desc("tripduration")).select("age").dropna().limit(10) \
-        .write.mode("overwrite").csv("reports/top10_longest_trip_ages", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/top10_longest_trip_ages", header=True)
 
     df.orderBy("tripduration").select("age").dropna().limit(10) \
-        .write.mode("overwrite").csv("reports/top10_shortest_trip_ages", header=True)
+        .coalesce(1).write.mode("overwrite").csv("reports/top10_shortest_trip_ages", header=True)
 
 
 def main():
     """
     Hàm chính:
     - Khởi tạo SparkSession.
-    - Đọc dữ liệu từ các file ZIP chứa CSV.
-    - Chuẩn hoá schema, tiền xử lý dữ liệu.
-    - Sinh ra các báo cáo phân tích và ghi vào thư mục `reports`.
+    - Đọc dữ liệu từ 2 file ZIP: 2019 Q4 và 2020 Q1.
+    - Chuẩn hoá và tiền xử lý dữ liệu.
+    - Sinh các báo cáo và lưu vào thư mục 'reports'.
     """
     spark = SparkSession.builder.appName("Exercise6").getOrCreate()
 
-    # Đọc và xử lý 2 file dữ liệu
+    # Đọc dữ liệu từ các file zip
     df1 = read_zip_csv(spark, "data/Divvy_Trips_2019_Q4.zip")
     df2 = read_zip_csv(spark, "data/Divvy_Trips_2020_Q1.zip")
 
+    # Chuẩn hoá schema
     df1 = standardize_schema(df1)
     df2 = standardize_schema(df2)
 
+    # Gộp và tiền xử lý
     df = df1.unionByName(df2)
     df = preprocess_data(df)
 
-    # Sinh báo cáo
+    # Sinh các báo cáo
     avg_trip_duration_per_day(df)
     trips_per_day(df)
     most_popular_start_station_per_month(df)
@@ -813,7 +824,6 @@ def main():
     top10_ages_trip_duration(df)
 
     spark.stop()
-
 
 if __name__ == "__main__":
     main()
