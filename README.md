@@ -24,9 +24,6 @@ Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
 ![image](https://github.com/user-attachments/assets/ecc7468a-b410-4d23-8f77-798249a11cd5)
 
 ### Exercise 1 - Downloading files.
-The [first exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-1) tests your ability to download a number of files
-from an `HTTP` source and unzip them, storing them locally with `Python`.
-`cd Exercises/Exercise-1` and see `README` in that location for instructions.
 
 > 1. Thực thi lệnh sau trong CMD: git clone để clone GitHub repo về máy của mình
 ![image](https://github.com/user-attachments/assets/d61fb447-06b2-4656-8555-bb9707404536)
@@ -203,10 +200,6 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/95848f93-4780-4512-a198-a31543a0313b)
 
 ### Exercise 2 - Web Scraping + Downloading + Pandas
-The [second exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-2) 
-tests your ability perform web scraping, build uris, download files, and use Pandas to
-do some simple cumulative actions.
-`cd Exercises/Exercise-2` and see `README` in that location for instructions.
 
 > 1. Thay đổi đường dẫn thư mục tại CMD thành `Exercise-2`
 
@@ -363,10 +356,6 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/9ac18ee9-7d4f-4ed9-9112-aedf7d4fffa6)
 
 ### Exercise 3 - Boto3 AWS + s3 + Python.
-The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) tests a few skills.
-This time we  will be using a popular `aws` package called `boto3` to try to perform a multi-step
-actions to download some open source `s3` data files.
-`cd Exercises/Exercise-3` and see `README` in that location for instructions.
 
 > 1. Thay đổi đường dẫn thư mục tại CMD thành `Exercise-3`
 
