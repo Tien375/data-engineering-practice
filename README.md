@@ -468,7 +468,7 @@ if __name__ == "__main__":
 
 ### Exercise 4 - Convert JSON to CSV + Ragged Directories.
 1. Thay đổi đường dẫn thư mục tại cmd thành `Exercise-4`
-2. Chạy lệnh docker `build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
+2. Chạy lệnh `docker build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
 ![image](https://github.com/user-attachments/assets/cf9c4de5-2bcb-416a-8a7c-fcdaa871759e)
 ![image](https://github.com/user-attachments/assets/c000b830-a67c-4b5d-a975-84c79e46a307)
 4. Nội dung file `main.py`
@@ -633,23 +633,197 @@ if __name__ == "__main__":
 5. Kết quả:
 ![image](https://github.com/user-attachments/assets/5b83de03-f9dc-4ea6-beb8-ca95865af59a)
 ![image](https://github.com/user-attachments/assets/9ddd7713-955e-4147-81d1-9a080d1d29f8)
-![image](https://github.com/user-attachments/assets/c5e70b2e-f04b-4b62-839a-77642be18f9c)
-### Intermediate Exercises
 
-#### Exercise 6 - Ingestion and Aggregation with PySpark.
-The [sixth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-6) 
-Is going to step it up a little and move onto more popular tools. In this exercise we are going
-to load some files using `PySpark` and then be asked to do some basic aggregation.
-Best of luck!
+### Exercise 6 - Ingestion and Aggregation with PySpark.
+1. Thay đổi đường dẫn cmd thành `Exercise-5`
+2. Chạy lệnh `docker build --tag=exercise-6 .` để build image Docker (Quá trình diễn ra trong khoảng 5 phút)
+![image](https://github.com/user-attachments/assets/8d7cd1d6-e0fd-4b51-b1f6-62c6c5bab99f)
+3. Nội dung file `main.py`:
+```
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.window import Window
 
-#### Exercise 7 - Using Various PySpark Functions
-The [seventh exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-7) 
-Taking a page out of the previous exercise, this one is focus on using a few of the
-more common build in PySpark functions `pyspark.sql.functions` and applying their
-usage to real-life problems.
+import tempfile
+import os
+import zipfile
 
-Many times to solve simple problems we have to find and use multiple functions available
-from libraries. This will test your ability to do that.
+def read_zip_csv(spark, path):
+    """
+    Đọc file ZIP chứa các file CSV.
+    - Giải nén tạm thời từng file CSV trong ZIP.
+    - Đọc các file CSV bằng Spark.
+    - Hợp nhất tất cả DataFrame (nếu có nhiều hơn 1).
+    - Trả về DataFrame kết quả.
+    """
+    with zipfile.ZipFile(path, 'r') as zip_ref:
+        csv_files = [
+            f for f in zip_ref.namelist()
+            if f.endswith('.csv') and not f.startswith('__MACOSX/') and not os.path.basename(f).startswith('._')
+        ]
+
+        dfs = []
+        temp_paths = []
+        for csv_file in csv_files:
+            with zip_ref.open(csv_file) as file:
+                with tempfile.NamedTemporaryFile(delete=False, suffix=".csv") as temp_file:
+                    temp_file.write(file.read())
+                    temp_path = temp_file.name
+                    temp_paths.append(temp_path)
+
+                df = spark.read.option("header", "true").csv(temp_path, inferSchema=True)
+                dfs.append(df)
+
+        # Hợp nhất các DataFrame
+        final_df = dfs[0] if len(dfs) == 1 else dfs[0].unionByName(*dfs[1:])
+        final_df.cache().count()  # Cache để tối ưu hiệu suất
+
+        # Xoá các file tạm
+        for path in temp_paths:
+            os.remove(path)
+
+        return final_df
+
+
+def standardize_schema(df):
+    """
+    Chuẩn hoá schema của DataFrame.
+    - Đổi tên các cột nếu có định dạng từ năm 2020 (tên cột khác 2019).
+    - Thêm các cột `gender` và `birthyear` nếu thiếu.
+    - Đảm bảo DataFrame có định dạng thống nhất: trip_id, tripduration, start_time, from_station_name, gender, birthyear.
+    """
+    columns = df.columns
+    if "ride_id" in columns:
+        df = df.withColumnRenamed("ride_id", "trip_id") \
+               .withColumnRenamed("started_at", "start_time") \
+               .withColumnRenamed("start_station_name", "from_station_name") \
+               .withColumn("tripduration", unix_timestamp("ended_at") - unix_timestamp("start_time")) \
+               .withColumn("gender", lit(None).cast("string")) \
+               .withColumn("birthyear", lit(None).cast("int"))
+        df = df.select("trip_id", "tripduration", "start_time", "from_station_name", "gender", "birthyear")
+    else:
+        df = df.select("trip_id", "tripduration", "start_time", "from_station_name", "gender", "birthyear")
+    return df
+
+
+def preprocess_data(df):
+    """
+    Tiền xử lý dữ liệu:
+    - Ép kiểu dữ liệu.
+    - Tạo thêm các cột ngày, tháng, tuổi.
+    """
+    df = df.withColumn("tripduration", col("tripduration").cast("float")) \
+        .withColumn("start_time", to_timestamp("start_time")) \
+        .withColumn("date", to_date("start_time")) \
+        .withColumn("month", date_format(col("start_time"), "yyyy-MM")) \
+        .withColumn("birthyear", col("birthyear").cast("int")) \
+        .withColumn("age", 2023 - col("birthyear"))  # Tính tuổi
+    return df
+
+
+def avg_trip_duration_per_day(df):
+    """
+    Tính thời lượng chuyến đi trung bình theo từng ngày và ghi ra file CSV.
+    """
+    df.groupBy("date").agg(avg("tripduration").alias("avg_duration")) \
+        .write.mode("overwrite").csv("reports/avg_trip_duration_per_day", header=True)
+
+
+def trips_per_day(df):
+    """
+    Tính tổng số chuyến đi mỗi ngày và ghi ra file CSV.
+    """
+    df.groupBy("date").count() \
+        .write.mode("overwrite").csv("reports/trips_per_day", header=True)
+
+
+def most_popular_start_station_per_month(df):
+    """
+    Tìm bến xuất phát phổ biến nhất mỗi tháng.
+    - Dựa vào số lượng chuyến đi tại mỗi bến.
+    - Lấy bến có số lượng lớn nhất theo từng tháng.
+    """
+    window = Window.partitionBy("month").orderBy(desc("count"))
+    df.groupBy("month", "from_station_name").count() \
+        .withColumn("rank", row_number().over(window)) \
+        .filter(col("rank") == 1) \
+        .write.mode("overwrite").csv("reports/most_popular_start_station", header=True)
+
+
+def top3_stations_last_two_weeks(df):
+    """
+    Lấy top 3 bến xuất phát mỗi ngày trong 2 tuần gần nhất.
+    - Dựa trên ngày mới nhất trong dữ liệu.
+    """
+    latest_date = df.select(max("date")).first()[0]
+    cutoff = latest_date - expr("INTERVAL 14 DAYS")
+    window = Window.partitionBy("date").orderBy(desc("count"))
+    df.filter(col("date") >= cutoff) \
+        .groupBy("date", "from_station_name").count() \
+        .withColumn("rank", row_number().over(window)) \
+        .filter(col("rank") <= 3) \
+        .write.mode("overwrite").csv("reports/top3_stations_last_2_weeks", header=True)
+
+
+def gender_avg_duration(df):
+    """
+    Tính thời lượng chuyến đi trung bình theo giới tính và ghi ra CSV.
+    """
+    df.groupBy("gender").agg(avg("tripduration").alias("avg_duration")) \
+        .write.mode("overwrite").csv("reports/gender_avg_duration", header=True)
+
+
+def top10_ages_trip_duration(df):
+    """
+    Tìm top 10 độ tuổi có thời lượng chuyến đi dài nhất và ngắn nhất.
+    """
+    df.orderBy(desc("tripduration")).select("age").dropna().limit(10) \
+        .write.mode("overwrite").csv("reports/top10_longest_trip_ages", header=True)
+
+    df.orderBy("tripduration").select("age").dropna().limit(10) \
+        .write.mode("overwrite").csv("reports/top10_shortest_trip_ages", header=True)
+
+
+def main():
+    """
+    Hàm chính:
+    - Khởi tạo SparkSession.
+    - Đọc dữ liệu từ các file ZIP chứa CSV.
+    - Chuẩn hoá schema, tiền xử lý dữ liệu.
+    - Sinh ra các báo cáo phân tích và ghi vào thư mục `reports`.
+    """
+    spark = SparkSession.builder.appName("Exercise6").getOrCreate()
+
+    # Đọc và xử lý 2 file dữ liệu
+    df1 = read_zip_csv(spark, "data/Divvy_Trips_2019_Q4.zip")
+    df2 = read_zip_csv(spark, "data/Divvy_Trips_2020_Q1.zip")
+
+    df1 = standardize_schema(df1)
+    df2 = standardize_schema(df2)
+
+    df = df1.unionByName(df2)
+    df = preprocess_data(df)
+
+    # Sinh báo cáo
+    avg_trip_duration_per_day(df)
+    trips_per_day(df)
+    most_popular_start_station_per_month(df)
+    top3_stations_last_two_weeks(df)
+    gender_avg_duration(df)
+    top10_ages_trip_duration(df)
+
+    spark.stop()
+
+
+if __name__ == "__main__":
+    main()
+```
+4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
+![image](https://github.com/user-attachments/assets/f0667bfc-5393-4737-9e9d-597e2de41288)
+5. Kết quả:
+![image](https://github.com/user-attachments/assets/1d00c8cc-dfbd-4915-9a6b-8717ff89c889)
+![image](https://github.com/user-attachments/assets/e5ce0fd3-9ecd-4147-b58e-2cc66124e123)
+### Exercise 7 - Using Various PySpark Functions
 
 #### Exercise 8 - Using DuckDB for Analytics and Transforms.
 The [eighth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-8) 
