@@ -468,7 +468,7 @@ if __name__ == "__main__":
 
 ### Exercise 4 - Convert JSON to CSV + Ragged Directories.
 1. Thay đổi đường dẫn thư mục tại cmd thành `Exercise-4`
-2. Chạy lệnh `docker build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
+2. Chạy lệnh `docker build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong khoảng 5 phút)
 ![image](https://github.com/user-attachments/assets/cf9c4de5-2bcb-416a-8a7c-fcdaa871759e)
 ![image](https://github.com/user-attachments/assets/c000b830-a67c-4b5d-a975-84c79e46a307)
 4. Nội dung file `main.py`
@@ -562,7 +562,7 @@ if __name__ == "__main__":
 
 ### Exercise 5 - Data Modeling for Postgres + Python.
 1. Thay đổi đường dẫn cmd thành `Exercise-5`
-2. Chạy lệnh docker `build --tag=exercise-5 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
+2. Chạy lệnh `docker build --tag=exercise-5 .` để build image Docker (Quá trình diễn ra trong khoảng 1-2 phút)
 ![image](https://github.com/user-attachments/assets/0940a429-7df2-44d5-9000-ccd418f3ba46)
 3. Nội dung file `main.py`:
 ```
@@ -639,7 +639,7 @@ if __name__ == "__main__":
 
 ### Exercise 6 - Ingestion and Aggregation with PySpark.
 1. Thay đổi đường dẫn cmd thành `Exercise-6`
-2. Chạy lệnh `docker build --tag=exercise-6 .` để build image Docker (Quá trình diễn ra trong khoảng 5 phút)
+2. Chạy lệnh `docker build --tag=exercise-6 .` để build image Docker (Quá trình diễn ra trong khoảng 10-15 phút)
 ![image](https://github.com/user-attachments/assets/8d7cd1d6-e0fd-4b51-b1f6-62c6c5bab99f)
 3. Nội dung file `main.py`:
 ```
@@ -854,7 +854,7 @@ if __name__ == "__main__":
 
 ### Exercise 7 - Using Various PySpark Functions
 1. Thay đổi đường dẫn cmd thành `Exercise-7`
-2. Chạy lệnh `docker build --tag=exercise-7 .` để build image Docker (Quá trình diễn ra trong khoảng 2-3 phút)
+2. Chạy lệnh `docker build --tag=exercise-7 .` để build image Docker (Quá trình diễn ra trong khoảng 10-15 phút)
 ![image](https://github.com/user-attachments/assets/3fa9f9ba-b596-409d-9c2c-8d8acc765457)
 3. Nội dung file `main.py`:
 ```
