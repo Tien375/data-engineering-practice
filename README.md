@@ -470,7 +470,92 @@ if __name__ == "__main__":
 1. Thay đổi đường dẫn thư mục tại cmd thành `Exercise-4`
 2. Chạy lệnh docker `build --tag=exercise-4 .` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
 ![image](https://github.com/user-attachments/assets/cf9c4de5-2bcb-416a-8a7c-fcdaa871759e)
+3. Nội dung file `main.py`
+`import os
+import glob
+import json
+import csv
 
+def flatten_json(y):
+    """
+    Hàm đệ quy để làm phẳng (flatten) một đối tượng JSON lồng nhau.
+    Mục đích là chuyển các key lồng nhau thành một key duy nhất bằng cách nối các key cha-con bằng dấu gạch dưới (_).
+    Trả về một dict phẳng, phù hợp để ghi vào CSV.
+    """
+    out = {}
+
+    def flatten(x, name=''):
+        if isinstance(x, dict):  # Nếu là dict, duyệt các key
+            for a in x:
+                flatten(x[a], f"{name}{a}_")
+        elif isinstance(x, list):  # Nếu là list, duyệt từng phần tử theo chỉ số
+            for i, a in enumerate(x):
+                flatten(a, f"{name}{i}_")
+        else:  # Nếu là giá trị đơn giản, lưu vào dict kết quả
+            out[name[:-1]] = x  # name[:-1] để loại bỏ dấu "_" cuối cùng
+
+    flatten(y)
+    return out
+
+
+def convert_json_to_csv(json_path):
+    """
+    Hàm chuyển đổi một file JSON (có thể là object hoặc list các object) thành file CSV.
+    - Đọc dữ liệu từ file JSON.
+    - Làm phẳng dữ liệu nếu có lồng nhau.
+    - Ghi dữ liệu ra file CSV cùng tên với file JSON (chỉ thay phần mở rộng).
+    """
+    with open(json_path, 'r', encoding='utf-8') as f:
+        data = json.load(f)
+
+    # Nếu là danh sách các object thì làm phẳng từng object
+    if isinstance(data, list):
+        flat_data = [flatten_json(item) for item in data]
+    else:
+        flat_data = [flatten_json(data)]
+
+    # Tạo tên file CSV
+    csv_path = os.path.splitext(json_path)[0] + '.csv'
+
+    with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
+        if not flat_data:
+            return  # Nếu dữ liệu rỗng thì không ghi
+        fieldnames = sorted(flat_data[0].keys())  # Lấy danh sách cột từ khóa của dict đầu tiên
+        writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
+        writer.writeheader()  # Ghi tiêu đề cột
+        for row in flat_data:
+            writer.writerow(row)  # Ghi từng dòng dữ liệu
+
+
+def main():
+    """
+    Hàm chính:
+    - Tìm tất cả các file JSON trong thư mục 'data' và các thư mục con.
+    - Gọi hàm chuyển đổi để xử lý từng file JSON sang CSV.
+    """
+    json_files = glob.glob('data/**/*.json', recursive=True)  # Tìm đệ quy tất cả các file .json
+
+    print(f"Đã tìm thấy {len(json_files)} file JSON.")
+    
+    for json_file in json_files:
+        print(f"Đang xử lý: {json_file}")
+        convert_json_to_csv(json_file)
+
+
+if __name__ == "__main__":
+    main()
+`
+4. save file `main.py` và thực thi lệnh `docker-compose up run`
+![image](https://github.com/user-attachments/assets/c000b830-a67c-4b5d-a975-84c79e46a307)
+![image](https://github.com/user-attachments/assets/ed1748d0-c796-4402-9714-3a944feba22c)
+5. Kết quả: 
+![image](https://github.com/user-attachments/assets/f6cbb4b4-5f1c-4d2f-8458-de593034531c)
+![image](https://github.com/user-attachments/assets/b4fd5b51-8cde-4933-a65a-56102ec1413e)
+![image](https://github.com/user-attachments/assets/91f3b46b-bba7-4dca-afe7-ada01065219f)
+![image](https://github.com/user-attachments/assets/979318ef-431e-4e2e-9ce3-45d0d82c5318)
+![image](https://github.com/user-attachments/assets/85bd802f-95b5-409e-ab32-defaf558fe08)
+![image](https://github.com/user-attachments/assets/d5542882-98a9-4f5f-9c7f-c2219c7362bb)
+![image](https://github.com/user-attachments/assets/b38002ec-9003-4699-8bec-9fbb804151c9)
 #### Exercise 5 - Data Modeling for Postgres + Python.
 The [fifth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-5) 
 is going to be a little different than the rest. In this problem you will be given a number of
