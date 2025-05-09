@@ -547,7 +547,7 @@ def main():
 if __name__ == "__main__":
     main()
 ```
-4. save file `main.py` và thực thi lệnh `docker-compose up run`
+4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
 ![image](https://github.com/user-attachments/assets/ed1748d0-c796-4402-9714-3a944feba22c)
 5. Kết quả: 
 ![image](https://github.com/user-attachments/assets/f6cbb4b4-5f1c-4d2f-8458-de593034531c)
@@ -559,13 +559,81 @@ if __name__ == "__main__":
 ![image](https://github.com/user-attachments/assets/3502ed4c-4ab4-4617-93a9-420f6d8c80b2)
 ![image](https://github.com/user-attachments/assets/017fa112-fc1e-4847-ae38-ac08b9ac29b5)
 
-#### Exercise 5 - Data Modeling for Postgres + Python.
-The [fifth exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-5) 
-is going to be a little different than the rest. In this problem you will be given a number of
-`csv` files. You must create a data model / schema to hold these data sets, including indexes,
-then create all the tables inside `Postgres` by connecting to the database with `Python`.
+### Exercise 5 - Data Modeling for Postgres + Python.
+1. Thay đổi đường dẫn cmd thành `Exercise-5`
+2. Chạy lệnh docker `build --tag=exercise-5` để build image Docker (Quá trình diễn ra trong 2 – 3 phút)
+![image](https://github.com/user-attachments/assets/0940a429-7df2-44d5-9000-ccd418f3ba46)
+3. Nội dung file `main.py`:
+```
+import psycopg2
+import csv
+import os
+
+def execute_sql_script(cur, filename):
+    """
+    Hàm thực thi nội dung từ một file SQL.
+    - Đọc toàn bộ nội dung file SQL.
+    - Thực thi bằng con trỏ cơ sở dữ liệu (cursor).
+    """
+    with open(filename, 'r') as f:
+        cur.execute(f.read())
+
+def insert_csv_data(cur, conn, table_name, file_path):
+    """
+    Hàm chèn dữ liệu từ file CSV vào bảng trong cơ sở dữ liệu PostgreSQL.
+    - Đọc file CSV.
+    - Tạo câu lệnh INSERT tương ứng với số cột.
+    - Thực hiện chèn từng dòng dữ liệu vào bảng.
+    - Gọi commit() để lưu thay đổi.
+    """
+    with open(file_path, 'r') as f:
+        reader = csv.reader(f)
+        headers = next(reader)  # Đọc dòng đầu tiên làm tên cột
+        placeholders = ','.join(['%s'] * len(headers))  # Tạo placeholders: %s,%s,...
+        insert_query = f"INSERT INTO {table_name} ({','.join(headers)}) VALUES ({placeholders})"
+        for row in reader:
+            cur.execute(insert_query, row)
+    conn.commit()  # Ghi dữ liệu vào cơ sở dữ liệu
+
+def main():
+    """
+    Hàm chính:
+    - Kết nối đến cơ sở dữ liệu PostgreSQL.
+    - Tạo bảng từ file SQL.
+    - Đọc và chèn dữ liệu từ các file CSV vào các bảng tương ứng.
+    - Đóng kết nối khi hoàn tất.
+    """
+    host = "postgres"
+    database = "postgres"
+    user = "postgres"
+    pas = "postgres"
+
+    # Kết nối đến PostgreSQL
+    conn = psycopg2.connect(host=host, database=database, user=user, password=pas)
+    cur = conn.cursor()
+
+    # Thực thi script tạo bảng
+    execute_sql_script(cur, "create_tables.sql")
+
+    # Chèn dữ liệu từ các file CSV vào bảng
+    insert_csv_data(cur, conn, "accounts", "data/accounts.csv")
+    insert_csv_data(cur, conn, "products", "data/products.csv")
+    insert_csv_data(cur, conn, "transactions", "data/transactions.csv")
+
+    # Đóng cursor và connection
+    cur.close()
+    conn.close()
 
 
+if __name__ == "__main__":
+    main()
+```
+4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
+![image](https://github.com/user-attachments/assets/0bb57863-2a3e-49b1-8506-608809b6eb3a)
+5. Kết quả:
+![image](https://github.com/user-attachments/assets/5b83de03-f9dc-4ea6-beb8-ca95865af59a)
+![image](https://github.com/user-attachments/assets/9ddd7713-955e-4147-81d1-9a080d1d29f8)
+![image](https://github.com/user-attachments/assets/c5e70b2e-f04b-4b62-839a-77642be18f9c)
 ### Intermediate Exercises
 
 #### Exercise 6 - Ingestion and Aggregation with PySpark.
