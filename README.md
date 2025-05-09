@@ -394,7 +394,7 @@ if __name__ == "__main__":
 
 > Hoặc sau khi file main.py , chạy dòng lệnh thực thi lệnh `docker-compose up run`. Kết quả sau khi thực hiện:
 
-![image](https://github.com/user-attachments/assets/3aacd85d-ff6d-4814-b154-14d34f48e080)
+![image](https://github.com/user-attachments/assets/9ac18ee9-7d4f-4ed9-9112-aedf7d4fffa6)
 
 #### Exercise 3 - Boto3 AWS + s3 + Python.
 The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) tests a few skills.
