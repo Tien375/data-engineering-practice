@@ -1,4 +1,4 @@
-# REPPORT LAB8 - LAB9
+![image](https://github.com/user-attachments/assets/6c52df6a-30ff-4166-b7f1-ba747428b4d3)# REPPORT LAB8 - LAB9
 ## MÔN: NHẬP MÔN KỸ THUẬT DỮ LIỆU - LỚP: DHKHDL19A
 ### Danh sách thành viên:
 >> 1. Trần Nhật Tiến
@@ -819,10 +819,25 @@ if __name__ == "__main__":
     main()
 ```
 4. Sau khi nhập code, save file `main.py` thì thực thi lệnh `docker-compose up run`
+![image](https://github.com/user-attachments/assets/6fc312c5-7e84-4c53-a906-b4f3a19afede)
 ![image](https://github.com/user-attachments/assets/f0667bfc-5393-4737-9e9d-597e2de41288)
-5. Kết quả:
+6. Kết quả:
 ![image](https://github.com/user-attachments/assets/1d00c8cc-dfbd-4915-9a6b-8717ff89c889)
 ![image](https://github.com/user-attachments/assets/e5ce0fd3-9ecd-4147-b58e-2cc66124e123)
+- Thời gian chuyến đi trung bình mỗi ngày
+![image](https://github.com/user-attachments/assets/1a28bfd4-a890-42b8-b607-a528ae385c7a)
+- Số chuyến đi mỗi ngày
+![image](https://github.com/user-attachments/assets/3918bf7b-626e-433b-bc4c-62a37be564c1)
+- Trạm khởi hành phổ biến nhất cho mỗi tháng
+![image](https://github.com/user-attachments/assets/e71a5c21-d7c0-43b9-a2e7-6e466792c475)
+- Ba trạm khởi hành hàng đầu mỗi ngày trong hai tuần
+![image](https://github.com/user-attachments/assets/ec8d3675-a307-4418-857e-24269b6651d9)
+- Nam hay nữ thực hiện những chuyến đi dài hơn trung bình
+![image](https://github.com/user-attachments/assets/c5fd58a1-589c-4749-8d03-22e07baad87a)
+- 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi dài nhất
+![image](https://github.com/user-attachments/assets/9d23c2b1-ab92-4b45-a91f-cda5d803565d)
+- 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi ngắn nhất
+![image](https://github.com/user-attachments/assets/e94178b7-6daa-4471-9d91-325bac258275)
 ### Exercise 7 - Using Various PySpark Functions
 
 #### Exercise 8 - Using DuckDB for Analytics and Transforms.
