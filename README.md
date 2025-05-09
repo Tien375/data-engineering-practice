@@ -23,41 +23,7 @@ Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
 >> 4. Click Create Fork
 ![image](https://github.com/user-attachments/assets/ecc7468a-b410-4d23-8f77-798249a11cd5)
 
-
-One of the main obstacles of Data Engineering is the large
-and varied technical skills that can be required on a 
-day-to-day basis.
-
-*** Note - If you email a link to your GitHub repo with all the completed
-exercises, I will send you back a free copy of my ebook Introduction to Data Engineering. ***
-
-This aim of this repository is to help you develop and 
-learn those skills. Generally, here are the high level
-topics that these practice problems will cover.
-
-- Python data processing.
-- csv, flat-file, parquet, json, etc.
-- SQL database table design.
-- Python + Postgres, data ingestion and retrieval.
-- PySpark
-- Data cleansing / dirty data.
-
-### How to work on the problems.
-You will need two things to work effectively on most all
-of these problems. 
-- `Docker`
-- `docker-compose`
-
-All the tools and technologies you need will be packaged
-  into the `dockerfile` for each exercise.
-
-For each exercise you will need to `cd` into that folder and
-run the `docker build` command, that command will be listed in
-the `README` for each exercise, follow those instructions.
-
-### Beginner Exercises
-
-#### Exercise 1 - Downloading files.
+### Exercise 1 - Downloading files.
 The [first exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-1) tests your ability to download a number of files
 from an `HTTP` source and unzip them, storing them locally with `Python`.
 `cd Exercises/Exercise-1` and see `README` in that location for instructions.
@@ -236,7 +202,7 @@ if __name__ == "__main__":
 > 7. Sau khi save `main.py`, chạy lệnh `docker-compose up run` (mất khoảng 5 phút)
 ![image](https://github.com/user-attachments/assets/95848f93-4780-4512-a198-a31543a0313b)
 
-#### Exercise 2 - Web Scraping + Downloading + Pandas
+### Exercise 2 - Web Scraping + Downloading + Pandas
 The [second exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-2) 
 tests your ability perform web scraping, build uris, download files, and use Pandas to
 do some simple cumulative actions.
@@ -396,7 +362,7 @@ if __name__ == "__main__":
 
 ![image](https://github.com/user-attachments/assets/9ac18ee9-7d4f-4ed9-9112-aedf7d4fffa6)
 
-#### Exercise 3 - Boto3 AWS + s3 + Python.
+### Exercise 3 - Boto3 AWS + s3 + Python.
 The [third exercise](https://github.com/danielbeach/data-engineering-practice/tree/main/Exercises/Exercise-3) tests a few skills.
 This time we  will be using a popular `aws` package called `boto3` to try to perform a multi-step
 actions to download some open source `s3` data files.
