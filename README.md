@@ -824,19 +824,19 @@ if __name__ == "__main__":
 6. Kết quả:
 ![image](https://github.com/user-attachments/assets/1d00c8cc-dfbd-4915-9a6b-8717ff89c889)
 ![image](https://github.com/user-attachments/assets/e5ce0fd3-9ecd-4147-b58e-2cc66124e123)
-- Thời gian chuyến đi trung bình mỗi ngày
+> Thời gian chuyến đi trung bình mỗi ngày
 ![image](https://github.com/user-attachments/assets/1a28bfd4-a890-42b8-b607-a528ae385c7a)
-- Số chuyến đi mỗi ngày
+> Số chuyến đi mỗi ngày
 ![image](https://github.com/user-attachments/assets/3918bf7b-626e-433b-bc4c-62a37be564c1)
-- Trạm khởi hành phổ biến nhất cho mỗi tháng
+> Trạm khởi hành phổ biến nhất cho mỗi tháng
 ![image](https://github.com/user-attachments/assets/e71a5c21-d7c0-43b9-a2e7-6e466792c475)
-- Ba trạm khởi hành hàng đầu mỗi ngày trong hai tuần
+> Ba trạm khởi hành hàng đầu mỗi ngày trong hai tuần
 ![image](https://github.com/user-attachments/assets/ec8d3675-a307-4418-857e-24269b6651d9)
-- Nam hay nữ thực hiện những chuyến đi dài hơn trung bình
+> Nam hay nữ thực hiện những chuyến đi dài hơn trung bình
 ![image](https://github.com/user-attachments/assets/c5fd58a1-589c-4749-8d03-22e07baad87a)
-- 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi dài nhất
+> 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi dài nhất
 ![image](https://github.com/user-attachments/assets/9d23c2b1-ab92-4b45-a91f-cda5d803565d)
-- 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi ngắn nhất
+> 10 độ tuổi hàng đầu của những người thực hiện những chuyến đi ngắn nhất
 ![image](https://github.com/user-attachments/assets/e94178b7-6daa-4471-9d91-325bac258275)
 ### Exercise 7 - Using Various PySpark Functions
 
