@@ -477,73 +477,61 @@ import json
 import csv
 
 def flatten_json(y):
-    """
-    Hàm đệ quy để làm phẳng (flatten) một đối tượng JSON lồng nhau.
-    Mục đích là chuyển các key lồng nhau thành một key duy nhất bằng cách nối các key cha-con bằng dấu gạch dưới (_).
-    Trả về một dict phẳng, phù hợp để ghi vào CSV.
-    """
+    # Hàm đệ quy để làm phẳng một đối tượng JSON lồng nhau
     out = {}
 
     def flatten(x, name=''):
-        if isinstance(x, dict):  # Nếu là dict, duyệt các key
+        if isinstance(x, dict):
+            # Nếu là dict, duyệt từng khóa và tiếp tục đệ quy
             for a in x:
                 flatten(x[a], f"{name}{a}_")
-        elif isinstance(x, list):  # Nếu là list, duyệt từng phần tử theo chỉ số
+        elif isinstance(x, list):
+            # Nếu là list, duyệt từng phần tử theo chỉ số
             for i, a in enumerate(x):
                 flatten(a, f"{name}{i}_")
-        else:  # Nếu là giá trị đơn giản, lưu vào dict kết quả
-            out[name[:-1]] = x  # name[:-1] để loại bỏ dấu "_" cuối cùng
+        else:
+            # Nếu là giá trị đơn giản, thêm vào dict kết quả
+            out[name[:-1]] = x  # Loại bỏ dấu gạch dưới cuối cùng
 
     flatten(y)
     return out
 
-
 def convert_json_to_csv(json_path):
-    """
-    Hàm chuyển đổi một file JSON (có thể là object hoặc list các object) thành file CSV.
-    - Đọc dữ liệu từ file JSON.
-    - Làm phẳng dữ liệu nếu có lồng nhau.
-    - Ghi dữ liệu ra file CSV cùng tên với file JSON (chỉ thay phần mở rộng).
-    """
+    # Hàm chuyển đổi một file JSON thành file CSV
     with open(json_path, 'r', encoding='utf-8') as f:
-        data = json.load(f)
+        data = json.load(f)  # Đọc dữ liệu từ file JSON
 
-    # Nếu là danh sách các object thì làm phẳng từng object
     if isinstance(data, list):
+        # Nếu là danh sách các đối tượng JSON
         flat_data = [flatten_json(item) for item in data]
     else:
+        # Nếu là một đối tượng JSON duy nhất
         flat_data = [flatten_json(data)]
 
-    # Tạo tên file CSV
+    # Tạo đường dẫn file CSV tương ứng
     csv_path = os.path.splitext(json_path)[0] + '.csv'
 
     with open(csv_path, 'w', newline='', encoding='utf-8') as csvfile:
         if not flat_data:
-            return  # Nếu dữ liệu rỗng thì không ghi
-        fieldnames = sorted(flat_data[0].keys())  # Lấy danh sách cột từ khóa của dict đầu tiên
+            return  # Nếu dữ liệu rỗng thì không ghi file
+        fieldnames = sorted(flat_data[0].keys())  # Lấy danh sách các cột từ khóa của dict đầu tiên
         writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
-        writer.writeheader()  # Ghi tiêu đề cột
+        writer.writeheader()  # Ghi dòng tiêu đề CSV
         for row in flat_data:
             writer.writerow(row)  # Ghi từng dòng dữ liệu
 
-
 def main():
-    """
-    Hàm chính:
-    - Tìm tất cả các file JSON trong thư mục 'data' và các thư mục con.
-    - Gọi hàm chuyển đổi để xử lý từng file JSON sang CSV.
-    """
-    json_files = glob.glob('data/**/*.json', recursive=True)  # Tìm đệ quy tất cả các file .json
+    # Hàm chính để tìm và xử lý tất cả các file JSON trong thư mục 'data'
+    json_files = glob.glob('data/**/*.json', recursive=True)  # Tìm tất cả file .json trong thư mục con
 
     print(f"Đã tìm thấy {len(json_files)} file JSON.")
     
     for json_file in json_files:
         print(f"Đang xử lý: {json_file}")
-        convert_json_to_csv(json_file)
-
+        convert_json_to_csv(json_file)  # Chuyển từng file JSON sang CSV
 
 if __name__ == "__main__":
-    main()
+    main()  # Gọi hàm main khi chạy script
 `
 4. save file `main.py` và thực thi lệnh `docker-compose up run`
 ![image](https://github.com/user-attachments/assets/c000b830-a67c-4b5d-a975-84c79e46a307)
