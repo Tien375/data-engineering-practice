@@ -4,6 +4,9 @@
 >> 1. Trần Nhật Tiến
 >> 2. Phạm Thị Anh Thư
 
+# LAB 8
+
+# LAB 9
 One of the main obstacles of Data Engineering is the large
 and varied technical skills that can be required on a 
 day-to-day basis.
