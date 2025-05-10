@@ -15,12 +15,12 @@ Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
 ![image](https://github.com/user-attachments/assets/5e98250f-e3bc-4c40-9590-d5ebddb771bd)
 
 Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn luyện mô hình
-
 	https://www.youtube.com/watch?v=LtInPTXfdb8
- >> 1. Chạy Docker Compose
- ![image](https://github.com/user-attachments/assets/9c4d4453-72e7-492a-b876-d13dca201c10)
-
->> 2. Mở Docker Desktop 
+Case#1: Run simple DAG at Local
+>> 1. Chạy lệnh `docker compose up airflow-init` để khởi tạo cơ sở dữ liệu và tài khoản admin 
+![image](https://github.com/user-attachments/assets/9c4d4453-72e7-492a-b876-d13dca201c10)
+![image](https://github.com/user-attachments/assets/d1a4ed00-5af7-428f-9600-bd1427112ece)
+>> 2. Chạy lệnh `docker compose up -d` để chạy toàn bộ hệ thống Airflow 
 ![image](https://github.com/user-attachments/assets/278503d8-eb4a-4880-a527-2439000469bd)
 ![image](https://github.com/user-attachments/assets/aaa611b1-ace5-41a5-9a9b-b9d999fac61d)
 >> 3. Nội dung DAG file `simple_dag_local.py`
@@ -64,11 +64,12 @@ t3 = BashOperator(
 
 [t1 , t2] >> t3
 ```
->> 4. Sau khi định nghĩa DAG file `Simple_dag_local.py` copy vào thư mục dags ở trên service
+>> 4. Sau khi định nghĩa DAG file `simple_dag_local.py` copy vào thư mục dags ở trên service
 ![image](https://github.com/user-attachments/assets/892419a5-3429-46fa-b463-7333c9ad8192)
 >> 5. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
+![image](https://github.com/user-attachments/assets/d9b63c12-8330-4189-93f8-6a067eaec700)
 ![image](https://github.com/user-attachments/assets/3fd43a82-1174-462c-80b3-70facea9160d)
->> 6. Ấn run để chạy:
+>> 7. Ấn run để chạy:
 ![image](https://github.com/user-attachments/assets/98e81e22-1dcf-410e-9360-8f961cc00fec)
 
 
