@@ -5,7 +5,7 @@
 >> 2. Phạm Thị Anh Thư _ MSSV 23643081
 
 # LAB 8
-Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
+## Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
 
 	https://www.youtube.com/watch?v=obNqcFM866M
 ![image](https://github.com/user-attachments/assets/552be05e-3fd4-49f9-aea9-a81470abc994)
@@ -14,7 +14,7 @@ Case-Study 1: Xây dựng pipeline tự động cào và trực quan dữ liệu
 ![image](https://github.com/user-attachments/assets/db4c440a-37c6-419d-9234-321f1241d1d8)
 ![image](https://github.com/user-attachments/assets/5e98250f-e3bc-4c40-9590-d5ebddb771bd)
 
-Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn luyện mô hình
+## Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn luyện mô hình
 	https://www.youtube.com/watch?v=LtInPTXfdb8
 Case#1: Run simple DAG at Local
 >> 1. Chạy lệnh `docker compose up airflow-init` để khởi tạo cơ sở dữ liệu và tài khoản admin 
