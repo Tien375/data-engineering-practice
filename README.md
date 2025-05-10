@@ -23,13 +23,53 @@ Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn l
 >> 2. Mở Docker Desktop 
 ![image](https://github.com/user-attachments/assets/278503d8-eb4a-4880-a527-2439000469bd)
 ![image](https://github.com/user-attachments/assets/aaa611b1-ace5-41a5-9a9b-b9d999fac61d)
+>> 3. Nội dung DAG file `simple_dag_local.py`
+```
+from datetime import datetime, timedelta
+from airflow import DAG
+from airflow.operators.bash import BashOperator
 
->> 3. Sau khi định nghĩa DAG file `Simple_dag_local.py` copy vào thư mục dags ở trên service
-![image](https://github.com/user-attachments/assets/6c053e37-4a05-4154-8444-9d5d5658d523)
+dag = DAG(
+    'tien_dag01',
+    default_args={
+        'email': ['nhattien200537@gmail.com'],
+        'email_on_failure': True,
+        'retries': 1,
+        'retry_delay': timedelta(minutes=5),
+    },
+    description='A simple DAG sample by Tien',
+    schedule_interval=timedelta(days=1),
+    start_date=datetime(2025, 5, 10),
+    tags=['tien'],
+)
 
->> 4. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
+t1 = BashOperator(
+    task_id='print_date',
+    bash_command='date > D:\date.txt',
+    dag = dag
+)
 
+t2 = BashOperator(
+    task_id='sleep',
+    bash_command='sleep 5',
+    retries=3,
+    dag = dag
+)
 
+t3 = BashOperator(
+    task_id='echo',
+    bash_command='echo t3 running',
+    dag = dag
+)
+
+[t1 , t2] >> t3
+```
+>> 4. Sau khi định nghĩa DAG file `Simple_dag_local.py` copy vào thư mục dags ở trên service
+![image](https://github.com/user-attachments/assets/892419a5-3429-46fa-b463-7333c9ad8192)
+>> 5. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
+![image](https://github.com/user-attachments/assets/3fd43a82-1174-462c-80b3-70facea9160d)
+>> 6. Ấn run để chạy:
+![image](https://github.com/user-attachments/assets/98e81e22-1dcf-410e-9360-8f961cc00fec)
 
 
 # LAB 9
