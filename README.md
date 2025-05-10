@@ -20,9 +20,7 @@
 >> 1. Chạy lệnh `docker compose up airflow-init` để khởi tạo cơ sở dữ liệu và tài khoản admin 
 ![image](https://github.com/user-attachments/assets/d1a4ed00-5af7-428f-9600-bd1427112ece)
 >> 2. Chạy lệnh `docker compose up -d` để chạy toàn bộ hệ thống Airflow
-![image](https://github.com/user-attachments/assets/4c22c259-3063-4fed-9c6e-654583f1700d)
-![image](https://github.com/user-attachments/assets/278503d8-eb4a-4880-a527-2439000469bd)
-![image](https://github.com/user-attachments/assets/aaa611b1-ace5-41a5-9a9b-b9d999fac61d)
+![image](https://github.com/user-attachments/assets/afff7c75-a696-4703-b763-ea7aaac1710d)
 >> 4. Nội dung DAG file `simple_dag_local.py`
 ```
 from datetime import datetime, timedelta
