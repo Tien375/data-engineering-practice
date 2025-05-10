@@ -70,7 +70,6 @@ t3 = BashOperator(
 >> 6. Ấn Trigger DAg để chạy
 ![image](https://github.com/user-attachments/assets/a6e83682-5fa2-4dc8-9b8f-2034b0824b6a)
 
-### Case#2: Run complex DAG at Local
 
 # LAB 9
 ## BÀI LÀM
