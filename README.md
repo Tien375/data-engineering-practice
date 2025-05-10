@@ -16,7 +16,7 @@
 
 ## Case-Study 2: Xây dựng pipeline để tự động cào dữ liệu, huấn luyện mô hình
 	https://www.youtube.com/watch?v=LtInPTXfdb8
-Case#1: Run simple DAG at Local
+### Case#1: Run simple DAG at Local
 >> 1. Chạy lệnh `docker compose up airflow-init` để khởi tạo cơ sở dữ liệu và tài khoản admin 
 ![image](https://github.com/user-attachments/assets/9c4d4453-72e7-492a-b876-d13dca201c10)
 ![image](https://github.com/user-attachments/assets/d1a4ed00-5af7-428f-9600-bd1427112ece)
