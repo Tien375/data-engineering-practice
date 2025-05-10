@@ -21,7 +21,7 @@
 ![image](https://github.com/user-attachments/assets/d1a4ed00-5af7-428f-9600-bd1427112ece)
 >> 2. Chạy lệnh `docker compose up -d` để chạy toàn bộ hệ thống Airflow
 ![image](https://github.com/user-attachments/assets/afff7c75-a696-4703-b763-ea7aaac1710d)
->> 4. Nội dung DAG file `simple_dag_local.py`
+>> 3. Nội dung DAG file `simple_dag_local.py`
 ```
 from datetime import datetime, timedelta
 from airflow import DAG
@@ -67,8 +67,10 @@ t3 = BashOperator(
 >> 5. Mở trình duyệt truy cập địa chỉ: `http://localhost:8080` trên thanh URL
 ![image](https://github.com/user-attachments/assets/d9b63c12-8330-4189-93f8-6a067eaec700)
 ![image](https://github.com/user-attachments/assets/3fd43a82-1174-462c-80b3-70facea9160d)
->> 7. Ấn Trigger DAg để chạy
+>> 6. Ấn Trigger DAg để chạy
 ![image](https://github.com/user-attachments/assets/a6e83682-5fa2-4dc8-9b8f-2034b0824b6a)
+
+### Case#2: Run complex DAG at Local
 
 # LAB 9
 ## BÀI LÀM
